@@ -13,7 +13,7 @@ class ProjectController extends Controller
     public function __construct()
     {
         // $this->middleware('auth')->only(['create']);   
-        $this->middleware('auth')->except(['index','show']);   
+        $this->middleware('auth')->except(['index', 'show']);
     }
 
 
@@ -67,24 +67,13 @@ class ProjectController extends Controller
     // Método store para almacenar la información.
     public function store(SaveProjectRequest $request)
     {
-        // return $request;
-        /* Project::create([
-            'title' => request('title'),
-            'url' => request('url'),
-            'description' => request('description'),
-        ]); */
 
-        // Project::create(request()->all()); # Puede llegar a tener inyección sql 
-        // Project::create(request()->only('title','url','description')); # Solo se permite esos campos
+        $project = new Project( $request->validated());
 
-        /* $fields =  request()->validate([
-            'title' => 'required',
-            'url' => 'required',
-            'description' => 'required',
-        ]);
+        $project->image = $request->file('image')->store('images');
 
-        Project::create($fields); */
-        Project::create($request->validated());
+        $project->save();
+
 
         return redirect()->route('projects.index')->with('status', 'El proyecto fue creado con éxito');
     }
@@ -115,10 +104,9 @@ class ProjectController extends Controller
     // Método Destroy para eliminar el proyecto
     public function destroy(Project $project)
     {
-        
+
         // Project::destroy($project); # Primera opcion 
         $project->delete();
-        return redirect()->route('projects.index')->with('status','El proyecto se ha eliminado con éxito');
-
+        return redirect()->route('projects.index')->with('status', 'El proyecto se ha eliminado con éxito');
     }
 }

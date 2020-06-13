@@ -16,7 +16,8 @@
 
                 <form class="bg-white py-3 px-4 shadow rounded" 
                     action="{{route('projects.store')}}" 
-                    method="post">        
+                    method="post"
+                    enctype="multipart/form-data">        
 
                     <h1 class="display-4">Nuevo proyecto</h1>
                     <hr>
