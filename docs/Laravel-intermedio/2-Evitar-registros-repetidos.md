@@ -2,7 +2,7 @@
 
 En el modelo se especifico acerca del campo de la url fuese unico a nivel de base de datos, por lo que al ingresar un nuevo proyecto con un url ya repetida dentro de sistema se puede notar el error que nos muestra Laravel acerca de que se tiene un registro ya existene en la url, por lo que se le debe informar al usuario acerca del error que se genera.
 
-Dentro de la carpeta de App/Http/Request tenemos un archivo el archivo llamado SaveProjectRequest el cual se utiliza para el registro y actulización de los proyectos. 
+Dentro de la carpeta de App/Http/Request tenemos un archivo el archivo llamado SaveProjectRequest el cual se utiliza para el registro y actualización de los proyectos. 
 En el método de **rules** donde se tiene la validación se configura nuevamente la url, donde en un array se asigna las nuevas validaciones, como el ser requerido el campo y que sera unico, por lo que se tiene que especificar en que tabla estan los registros para realizarlo de forma interna, y como parametro opcional podemos pasarle el nombre del campo en donde relizara la verificación.
 Nuestro método quedaría de la siguiente forma:
 ~~~

@@ -65,7 +65,7 @@ El anterior método de **store** para guardar la información realiza lo siguien
 - Recibe por parametro el FormRequest que es el hace las validaciones. 
 - Se crea una nueva instancia del modelo Project, dodne se asigna por parametro el request y el validated del formRequest
 - Se accede al campo de file de image que se establecio en el input y se inidca que guarde la imagen directamente en el disco .
-- Elproject teniendo todos los campos se procede a ser guardado por medio el método de save
-- finalemtne hacemos una redirección a la ruta de projects.index, conde se le pasa una variable de sesión llamada status con su respectivo valor. 
+- El project teniendo todos los campos se procede a ser guardado por medio el método de save
+- Finalemtne hacemos una redirección a la ruta de projects.index, conde se le pasa una variable de sesión llamada status con su respectivo valor. 
 
 
