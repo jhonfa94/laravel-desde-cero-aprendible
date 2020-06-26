@@ -38,7 +38,7 @@ class SaveProjectRequest extends FormRequest
             ],
             // 'image' => ['required','image'],
             'image' => [
-                'required',
+                $this->route('project') ? 'nullable' :  'required',
                 'mimes:png,jpeg',
                 // 'dimensions:min_width=400,min_height:400',
                 'max:2048'

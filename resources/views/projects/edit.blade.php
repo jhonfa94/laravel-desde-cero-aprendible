@@ -18,6 +18,7 @@
                 <form class="bg-white py-3 px-4 shadow rounded"
                     method="post"
                     action="{{route('projects.update',$project)}}" 
+                    enctype="multipart/form-data"
                     >
 
                     <h1 class="display-4">Editar  proyecto</h1>     

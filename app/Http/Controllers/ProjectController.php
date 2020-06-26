@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Project;
 use Illuminate\Http\Request;
 use App\Http\Requests\SaveProjectRequest;
+use Illuminate\Support\Facades\Storage;
+
 // use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
@@ -95,7 +97,20 @@ class ProjectController extends Controller
             'url' => request('url'),
             'description' => request('description'),
         ]); */
-        $project->update($request->validated());
+
+        if ($request->hasFile('image')) {
+
+            Storage::delete($project->image); //Eliminamos la imagen existente
+
+            $project->fill( $request->validated());
+            $project->image = $request->file('image')->store('images');
+            $project->save();
+        } else {
+            $project->update(array_filter($request->validated()));
+            
+        }
+
+
 
         return redirect()->route('projects.show', $project)->with('status', 'El proyecto fue actualizado con éxito');
     }
@@ -104,6 +119,7 @@ class ProjectController extends Controller
     // Método Destroy para eliminar el proyecto
     public function destroy(Project $project)
     {
+        Storage::delete($project->image); //Eliminamos la imagen existente
 
         // Project::destroy($project); # Primera opcion 
         $project->delete();
