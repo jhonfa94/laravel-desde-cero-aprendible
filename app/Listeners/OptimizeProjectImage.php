@@ -3,10 +3,11 @@
 namespace App\Listeners;
 
 use App\Events\ProjectSaved;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
 
 class OptimizeProjectImage implements ShouldQueue
 {
@@ -23,16 +24,19 @@ class OptimizeProjectImage implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  ProjectSaved  $event
+     * @param ProjectSaved $event
      * @return void
      */
     public function handle(ProjectSaved $event)
     {
+        # Simulando un error
+        //throw new \Exception("Error optimizando la imagen",1);
+
         $image = Image::make(Storage::get($event->project->image))
-            ->widen(600)
+            ->widen(800)
             ->limitColors(255)
             ->encode();
 
-        Storage::put($event->project->image, (string) $image);
+        Storage::put($event->project->image, (string)$image);
     }
 }
