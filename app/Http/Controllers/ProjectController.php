@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use App\Events\ProjectSaved;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +17,7 @@ class ProjectController extends Controller
 
     public function __construct()
     {
-        // $this->middleware('auth')->only(['create']);   
+        // $this->middleware('auth')->only(['create']);
         $this->middleware('auth')->except(['index', 'show']);
     }
 
@@ -60,7 +61,7 @@ class ProjectController extends Controller
     }
 
 
-    //Crear un nuevo proyecto 
+    //Crear un nuevo proyecto
     public function create()
     {
         return view('projects.create', [
@@ -78,15 +79,15 @@ class ProjectController extends Controller
 
         $project->save();
 
+        //SE DISPARA EVENTO
+        ProjectSaved::dispatch($project);
+
         //Optimización  de la imagen
-        
+        // this->optimizeImage($project);
 
-        $image = Image::make(Storage::get($project->image))
-            ->widen(600)
-            ->limitColors(255)
-            ->encode();
 
-        Storage::put($project->image, (string) $image);
+
+
 
 
         return redirect()->route('projects.index')->with('status', 'El proyecto fue creado con éxito');
@@ -120,17 +121,14 @@ class ProjectController extends Controller
 
             $project->save();
 
-            //Optimización  de la imagen
-            $image = Image::make(Storage::get($project->image))
-                ->widen(600)
-                ->limitColors(255)
-                ->encode();
+            //SE DISPARA EL EVENTO PARA OPTIIMIZAR LA IMAGEN
+            ProjectSaved::dispatch($project);
 
-            Storage::put($project->image, (string) $image);
+            //Optimización  de la imagen
+            //$this->optimizeImage($project);
         } else {
             $project->update(array_filter($request->validated()));
         }
-
 
 
         return redirect()->route('projects.show', $project)->with('status', 'El proyecto fue actualizado con éxito');
@@ -142,8 +140,20 @@ class ProjectController extends Controller
     {
         Storage::delete($project->image); //Eliminamos la imagen existente
 
-        // Project::destroy($project); # Primera opcion 
+        // Project::destroy($project); # Primera opcion
         $project->delete();
         return redirect()->route('projects.index')->with('status', 'El proyecto se ha eliminado con éxito');
     }
+
+    // Método para la optimización de la imagen
+    /*protected function optimizeImage($project)
+    {
+        $image = Image::make(Storage::get($project->image))
+            ->widen(600)
+            ->limitColors(255)
+            ->encode();
+
+        Storage::put($project->image, (string) $image);
+    }*/
+
 }
