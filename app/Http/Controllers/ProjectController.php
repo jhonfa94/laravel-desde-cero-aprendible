@@ -44,7 +44,7 @@ class ProjectController extends Controller
         // $proyectos = Project::latest()->paginate(2); # Por defecto filtra sobre el campo create_at, y el paginate muestra por defecto 15 registros y se personaliza dentro del método en este caso para visualizar 2 registros como maximo por página
 
         return view('projects.index', [
-            'projects' => Project::latest()->paginate(5)
+            'projects' => Project::with('category')->latest()->paginate(5)
         ]);
     }
 
