@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
 
-    protected $fillable = ['title', 'url', 'description'];
+    protected $fillable = ['category_id','title', 'url', 'description'];
 
     //Método para tener las rutas amigables donde va buscar por el campo que se le indique para la busqueda
     public function getRouteKeyName()

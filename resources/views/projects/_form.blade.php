@@ -13,6 +13,22 @@
     <label class="custom-file-label" for="customFile">Choose file</label>
 </div>
 
+<div class="form-group">
+    <label for="category_id">Categoría del proyecto</label>
+    <select name="category_id" 
+            id="category_id"
+            class="form-control border-o bg-light- shadow-sm">
+        <option value="" >Seleccione</option>
+        @foreach ($categories as $id => $name)
+            <option value="{{$id}}"
+                {{$id === $project->category_id ? 'selected' : ''}}
+            >
+            {{$name}}
+            </option>
+        @endforeach
+    </select>
+</div>
+
 
 <div class="form-group">
     <label for="tituloProyecto">Título del proyecto </label>
