@@ -7,7 +7,16 @@
 @section('content')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
-            <h1 class="display-4 mb-0">Portfolio</h1>
+            
+            @isset($category)
+                <div>
+                    <h1 class="display-4 mb-0">{{ $category->name }}</h1>
+                    <a href="{{ route('projects.index') }}">Regresar al portafolio</a>
+                </div>
+            @else
+                <h1 class="display-4 mb-0">@lang('Projects')</h1>
+            @endisset
+
             @auth        
                 <a class="btn btn-primary " 
                     href="{{route('projects.create')}}">
@@ -45,7 +54,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <a href=" {{ route('projects.show',$project) }}" class="btn btn-sm btn-primary">Ver más...</a>
                             @if ($project->category_id)
-                                <a href="#" class="badge badge-secondary">{{$project->category->name}} </a>                                
+                                <a href="{{ route('categories.show', $project->category) }}" class="badge badge-secondary">{{$project->category->name}} </a>                                
                             @endif
 
                         </div>

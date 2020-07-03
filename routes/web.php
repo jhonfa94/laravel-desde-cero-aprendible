@@ -42,6 +42,9 @@ Route::post('/contacto', 'MessageController@store')->name('messages.store');
 Route::resource('/portafolio', 'ProjectController')
     ->names('projects')
     ->parameters(['portafolio' => 'project']);
+
+
+Route::get('categorias/{category}', 'CategoryController@show')->name('categories.show');
     
 
 
