@@ -20,17 +20,8 @@ class ListProjectsTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $project = Project::create([
-             'title' => 'Mi nuevo proyecto',
-             'url' => 'mi-nuevo-proyecto',
-             'description' => 'Descripción de mi nuevo proyecto',
-        ]);
-
-        $project2 = Project::create([
-             'title' => 'Mi segundo proyecto',
-             'url' => 'mi-segundo-proyecto',
-             'description' => 'Descripción de mi segundo proyecto',
-        ]);
+        $project = factory('App\Project')->create();
+        $project2 = factory('App\Project')->create();
 
         $response = $this->get(route('projects.index'));
 
@@ -46,23 +37,16 @@ class ListProjectsTest extends TestCase
 
     public function test_can_see_individual_projects()
     {
+//        $user = factory('App\User',2)->create();
 
-        $project = Project::create([
-            'title' => 'Mi nuevo proyecto',
-            'url' => 'mi-nuevo-proyecto',
-            'description' => 'Descripción de mi nuevo proyecto',
-        ]);
-        $project2 = Project::create([
-            'title' => 'Mi segundo proyecto',
-            'url' => 'mi-segundo-proyecto',
-            'description' => 'Descripción de mi segundo proyecto',
-        ]);
+        $project = factory('App\Project')->create();
+        $project2 = factory('App\Project')->create();
+        //dd($project->toArray());
 
         $response  = $this->get(route('projects.show', $project));
 
         $response->assertSee($project->title);
         $response->assertDontSee($project2->title);
-
 
 
     }
