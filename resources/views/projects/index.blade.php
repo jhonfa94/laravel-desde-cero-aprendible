@@ -7,7 +7,7 @@
 @section('content')
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
-            
+
             @isset($category)
                 <div>
                     <h1 class="display-4 mb-0">{{ $category->name }}</h1>
@@ -17,12 +17,12 @@
                 <h1 class="display-4 mb-0">@lang('Projects')</h1>
             @endisset
 
-            @auth        
-                <a class="btn btn-primary " 
+            @auth
+                <a class="btn btn-primary "
                     href="{{route('projects.create')}}">
                     Crear proyecto
                 </a>
-            @endauth        
+            @endauth
 
         </div>
 
@@ -31,15 +31,15 @@
         </p>
 
         <hr>
-        
+
         <div class="d-flex flex-wrap justify-content-between align-items-start">
             @forelse ($projects as $project)
                 <div class="card" style="width: 18rem;">
                     @if ($project->image)
                         <img class="card-img-top" style="height: 150px; object-fit:cover;"
-                            src="/storage/{{$project->image}}" 
-                            alt="{{ $project->title }}" 
-                        >                             
+                            src="/storage/{{$project->image}}"
+                            alt="{{ $project->title }}"
+                        >
                     @endif
                     <div class="card-body">
                         <h5 class="card-title">
@@ -47,21 +47,21 @@
                                 {{ $project->title }}
                             </a>
 
-                        
+
                         </h5>
                         <h6 class="card-subtitle">{{$project->created_at->format('d/m/Y')}}</h6>
                         <p class="card-text text-truncate">{{ $project->description }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <a href=" {{ route('projects.show',$project) }}" class="btn btn-sm btn-primary">Ver más...</a>
                             @if ($project->category_id)
-                                <a href="{{ route('categories.show', $project->category) }}" class="badge badge-secondary">{{$project->category->name}} </a>                                
+                                <a href="{{ route('categories.show', $project->category) }}" class="badge badge-secondary">{{$project->category->name}} </a>
                             @endif
 
                         </div>
-                        
+
                     </div>
                 </div>
-                
+
             @empty
                <div class="card">
                    <div class="card-body">
@@ -71,12 +71,12 @@
             @endforelse
 
             <div class="mt-4">
-                {{$projects->links()}}  
+                {{$projects->links()}}
             </div>
 
         </div>{{-- div d-felex --}}
-            
-        
+
+
     </div>{{-- container --}}
 
 
