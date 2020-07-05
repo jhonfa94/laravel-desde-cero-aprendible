@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Project;
 use App\Events\ProjectSaved;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
@@ -65,6 +66,10 @@ class ProjectController extends Controller
     //Crear un nuevo proyecto
     public function create()
     {
+        # En caso de no pasar la validación aborta y muestra el error 403 de acceso prohibido
+        // Gate::authorize('create-projects');
+        $this->authorize('create-projects');
+
         return view('projects.create', [
             'project' => new Project,
             'categories' => Category::pluck('name','id'),
@@ -93,7 +98,7 @@ class ProjectController extends Controller
 
     //Método para editar el proyecto que se seleccione
     public function edit(Project $project)
-    {        
+    {
         return view('projects.edit', [
             'project' => $project,
             'categories' => Category::pluck('name','id')
@@ -109,6 +114,9 @@ class ProjectController extends Controller
             'url' => request('url'),
             'description' => request('description'),
         ]); */
+
+        # En caso de no pasar la validación aborta y muestra el error 403 de acceso prohibido
+        $this->authorize('create-projects');
 
         if ($request->hasFile('image')) {
 

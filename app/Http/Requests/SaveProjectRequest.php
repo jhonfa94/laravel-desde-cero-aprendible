@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class SaveProjectRequest extends FormRequest
@@ -15,7 +16,8 @@ class SaveProjectRequest extends FormRequest
     public function authorize()
     {
         // return false;
-        return true; # De momento se deja en true para que cualquier usuario pueda utilizar el formulario
+        # return true; # De momento se deja en true para que cualquier usuario pueda utilizar el formulario
+        return Gate::allows('create-projects');
     }
 
     /**
@@ -31,10 +33,10 @@ class SaveProjectRequest extends FormRequest
         return [
             'title' => 'required',
             'url' => [
-                'required', 
+                'required',
                 // 'unique:projects',
                 Rule::unique('projects')->ignore( $this->route('project') )
-                
+
             ],
             'category_id' => [
                 'required',
@@ -51,7 +53,7 @@ class SaveProjectRequest extends FormRequest
         ];
     }
 
-    # Agregando mensajes personalizados 
+    # Agregando mensajes personalizados
     public function messages()
     {
         return [
