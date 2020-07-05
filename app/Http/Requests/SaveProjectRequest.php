@@ -17,7 +17,8 @@ class SaveProjectRequest extends FormRequest
     {
         // return false;
         # return true; # De momento se deja en true para que cualquier usuario pueda utilizar el formulario
-        return Gate::allows('create-projects');
+        //return Gate::allows('create-projects');
+        return Gate::authorize('create', new \App\Project);
     }
 
     /**

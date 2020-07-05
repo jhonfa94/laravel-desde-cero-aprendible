@@ -45,6 +45,7 @@ class ProjectController extends Controller
         // $proyectos = Project::latest()->paginate(2); # Por defecto filtra sobre el campo create_at, y el paginate muestra por defecto 15 registros y se personaliza dentro del método en este caso para visualizar 2 registros como maximo por página
 
         return view('projects.index', [
+            'newProject' => new Project,
             'projects' => Project::with('category')->latest()->paginate(5)
         ]);
     }
@@ -68,10 +69,11 @@ class ProjectController extends Controller
     {
         # En caso de no pasar la validación aborta y muestra el error 403 de acceso prohibido
         // Gate::authorize('create-projects');
-        $this->authorize('create-projects');
+        //$this->authorize('create-projects');
+        $this->authorize('create', $project =  new Project);
 
         return view('projects.create', [
-            'project' => new Project,
+            'project' => $project,
             'categories' => Category::pluck('name','id'),
         ]);
     }
@@ -79,6 +81,7 @@ class ProjectController extends Controller
     // Método store para almacenar la información.
     public function store(SaveProjectRequest $request)
     {
+        $this->authorize('create', $project =  new Project);
 
         $project = new Project($request->validated());
 
@@ -99,6 +102,8 @@ class ProjectController extends Controller
     //Método para editar el proyecto que se seleccione
     public function edit(Project $project)
     {
+        $this->authorize('update',$project);
+
         return view('projects.edit', [
             'project' => $project,
             'categories' => Category::pluck('name','id')
@@ -114,6 +119,7 @@ class ProjectController extends Controller
             'url' => request('url'),
             'description' => request('description'),
         ]); */
+        $this->authorize('create', $project);
 
         # En caso de no pasar la validación aborta y muestra el error 403 de acceso prohibido
         $this->authorize('create-projects');
@@ -145,6 +151,7 @@ class ProjectController extends Controller
     // Método Destroy para eliminar el proyecto
     public function destroy(Project $project)
     {
+        $this->authorize('delete', $project);
         Storage::delete($project->image); //Eliminamos la imagen existente
 
         // Project::destroy($project); # Primera opcion

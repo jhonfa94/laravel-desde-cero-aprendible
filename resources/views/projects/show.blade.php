@@ -12,16 +12,16 @@
 
                 @if ($project->image)
                     <img class="card-img-top"
-                        src="/storage/{{$project->image}}" 
-                        alt="{{ $project->title }}" 
-                    >                             
+                        src="/storage/{{$project->image}}"
+                        alt="{{ $project->title }}"
+                    >
                 @endif
 
                 <div class="bg-white p-5 shadow rounded">
 
                     <h1 class="mb-0"> {{$project->title}}</h1>
                         @if ($project->category_id)
-                            <a href="{{ route('categories.show', $project->category) }}" class="badge badge-secondary mb-1">{{$project->category->name}} </a>                                
+                            <a href="{{ route('categories.show', $project->category) }}" class="badge badge-secondary mb-1">{{$project->category->name}} </a>
                         @endif
 
                         <p class="text-secondary">
@@ -37,29 +37,33 @@
 
                             @auth
                                 <div class="btn-group btn-group-sm">
-                                    
-                                    <a class="btn btn-primary" 
-                                        href="{{ route('projects.edit', $project) }}">
-                                        {{__('Edit')}}
-                                    </a>
+                                    @can('update',$project)
+                                        <a class="btn btn-primary"
+                                            href="{{ route('projects.edit', $project) }}">
+                                            {{__('Edit')}}
+                                        </a>
+                                    @endcan
 
-                                    <a class="btn btn-danger" 
-                                        href="#"
-                                        onclick="document.getElementById('')submit()" >
-                                        {{__('Delete')}}
-                                    </a>
-                                
+                                    @can('delete',$project)
+                                        <a class="btn btn-danger"
+                                            href="#"
+                                            onclick="document.getElementById('')submit()" >
+                                            {{__('Delete')}}
+                                        </a>
+
+                                        <form id="delete-project" class="d-none"
+                                            method="POST"
+                                            action="{{route('projects.destroy',$project)}}">
+
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+
+                                     @endcan
 
                                 </div>
-                                
-                                <form id="delete-project" class="d-none"
-                                    method="POST" 
-                                    action="{{route('projects.destroy',$project)}}">
 
-                                    @csrf
-                                    @method('DELETE')
-                                </form>           
-                                
+
                             @endauth
 
                         </div>
@@ -67,14 +71,14 @@
 
 
 
-                
+
 
                 </div>{{-- card --}}
             </div>{{-- col --}}
 
         </div>{{-- row --}}
 
-        
+
 
     </div>{{-- container --}}
 @endsection
