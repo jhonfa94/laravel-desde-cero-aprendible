@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 })->name('home'); */
 
 
-# Escuchamos las consultas que se generan 
+# Escuchamos las consultas que se generan
 /* DB::listen(function($query){
     var_dump($query->sql);
 }); */
@@ -45,14 +45,15 @@ Route::resource('/portafolio', 'ProjectController')
 
 
 Route::get('categorias/{category}', 'CategoryController@show')->name('categories.show');
-    
+
 
 
 # La siguiente ruta recibe como parametro el nombre, el cual esta opcional
 /* Route::get('saludo/{nombre?}', function ($nombre = "Invitado") {
-    return "Saludos $nombre"; 
+    return "Saludos $nombre";
 });
  */
-Auth::routes(['register' => false]);
+//Auth::routes(['register' => false]);
+Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
