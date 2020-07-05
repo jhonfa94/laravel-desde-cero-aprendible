@@ -46,7 +46,8 @@ class ProjectController extends Controller
 
         return view('projects.index', [
             'newProject' => new Project,
-            'projects' => Project::with('category')->latest()->paginate(5)
+            'projects' => Project::with('category')->latest()->paginate(6),
+            'deletedProjects' => Project::onlyTrashed()->get(),
         ]);
     }
 
@@ -122,7 +123,7 @@ class ProjectController extends Controller
         $this->authorize('create', $project);
 
         # En caso de no pasar la validación aborta y muestra el error 403 de acceso prohibido
-        $this->authorize('create-projects');
+        # $this->authorize('create-projects');
 
         if ($request->hasFile('image')) {
 
@@ -152,11 +153,31 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $this->authorize('delete', $project);
-        Storage::delete($project->image); //Eliminamos la imagen existente
+        //Storage::delete($project->image); //Eliminamos la imagen existente
 
         // Project::destroy($project); # Primera opcion
         $project->delete();
         return redirect()->route('projects.index')->with('status', 'El proyecto se ha eliminado con éxito');
+    }
+
+    //Método restore para restaurar el proyecto eliminado
+    public function restore($projectUrl)
+    {
+        $project = Project::withTrashed()->where('url',$projectUrl)->firstOrFail();
+
+        $this->authorize('restore', $project);
+        $project->restore();
+        return redirect()->route('projects.index')->with('status', 'El proyecto fue restaurado con éxito');
+    }
+
+    //Método restore para eliminar definitivamente el proyecto de la base de datos
+    public function forceDelete($projectUrl)
+    {
+        $project = Project::withTrashed()->where('url',$projectUrl)->firstOrFail();
+        $this->authorize('force-delete', $project);
+        Storage::delete($project->image); //Eliminamos la imagen existente
+        $project->forceDelete();
+        return redirect()->route('projects.index')->with('status', 'El proyecto fue eliminado permanentemente');
     }
 
     // Método para la optimización de la imagen

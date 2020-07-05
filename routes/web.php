@@ -44,6 +44,9 @@ Route::resource('/portafolio', 'ProjectController')
     ->parameters(['portafolio' => 'project']);
 
 
+Route::patch('portafolio/{project}/restore','ProjectController@restore')->name('projects.restore');
+Route::delete('portafolio/{project}/force-delete','ProjectController@forceDelete')->name('projects.force-delete');
+
 Route::get('categorias/{category}', 'CategoryController@show')->name('categories.show');
 
 

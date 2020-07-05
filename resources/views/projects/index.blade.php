@@ -70,11 +70,53 @@
                </div>
             @endforelse
 
-            <div class="mt-4">
-                {{$projects->links()}}
-            </div>
 
         </div>{{-- div d-felex --}}
+
+        <div class="mt-4">
+            {{-- Mostramos la páginación de los registros           --}}
+            {{$projects->links()}}
+        </div>
+
+
+        {{-- MOSTRAMOS LOS PROYECTOS ELIMINADOS         --}}
+        @auth()
+            @can('view-deleted-projects')
+                <h4>Papelera</h4>
+                <ul class="list-group">
+                    @foreach($deletedProjects as $deletedProject)
+                        <li class="list-group-item">
+                            {{$deletedProject->title}}
+
+                            @can('restore',$deletedProject)
+
+                                <form method="POST" action="{{ route('projects.restore',$deletedProject) }}" class="d-inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-sm btn-info">Restaurar</button>
+                                </form>
+                            @endcan
+
+                            @can('force-delete',$deletedProject)
+                                <form method="POST"
+                                      action="{{ route('projects.force-delete',$deletedProject) }}"
+                                      onsubmit="return confirm('Esta acción no se puede deshacer, ¿Estás seguro de querer eliminar este proyecto?')"
+                                      class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">Eliminar permanente</button>
+
+                                </form>
+                            @endcan
+                        </li>
+                    @endforeach
+                </ul>
+            @endcan
+        @endauth
+
+
+
+
 
 
     </div>{{-- container --}}

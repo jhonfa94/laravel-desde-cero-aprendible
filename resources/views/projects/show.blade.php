@@ -47,7 +47,7 @@
                                     @can('delete',$project)
                                         <a class="btn btn-danger"
                                             href="#"
-                                            onclick="document.getElementById('')submit()" >
+                                            onclick="document.getElementById('delete-project').submit()" >
                                             {{__('Delete')}}
                                         </a>
 

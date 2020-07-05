@@ -84,7 +84,7 @@ class ProjectPolicy
      */
     public function restore(User $user, Project $project)
     {
-        //
+        return $user->role === 'admin';
     }
 
     /**
@@ -96,6 +96,6 @@ class ProjectPolicy
      */
     public function forceDelete(User $user, Project $project)
     {
-        //
+        return $user->role === 'admin';
     }
 }

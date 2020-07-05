@@ -29,6 +29,10 @@ class AuthServiceProvider extends ServiceProvider
             //return $user->email === 'test@test.com';
             return $user->role === 'admin';
         });*/
+        Gate::define('view-deleted-projects', function ($user){
+            //return $user->email === 'test@test.com';
+            return $user->role === 'admin';
+        });
 
         //Gate::define('create-projects', 'App\Policies\ProjectPolicy@create');
 
